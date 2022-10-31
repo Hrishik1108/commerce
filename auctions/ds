@@ -1,0 +1,32 @@
+name=request.POST["name"]
+       price=request.POST["price"]
+       creation_date=request.POST["creation_date"]
+       images=request.POST["images"]
+    
+       forms=auction_listing(name=name,price=price,creation_date=creation_date,images=images)
+       
+       instance=forms.save(commit=False)
+       instance.user=request.user
+       if commit:
+        
+        instance.save()
+
+
+
+<div class="form-group">
+        Name
+        <input class="form-control" autofocus type="text" name="name" >
+    </div>
+    <div class="form-group">
+        Price
+        <input class="form-control" type="number" name="price" >
+    </div>
+    <div class="form-group">
+        Date
+        <input class="form-control" type="datetime" name="creation_date">
+    </div>
+    <div class="form-group">
+         Image
+        <input class="form-control" type="file" name="images" >
+    </div>
+    <input class="btn btn-primary" type="submit" value="Submit">

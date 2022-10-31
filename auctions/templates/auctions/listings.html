@@ -1,0 +1,60 @@
+{% extends 'auctions/layout.html' %}
+{% block title %}
+Listings
+{% endblock %}
+
+{% block body %}
+<p style="font-weight: bold;font-size: larger;">Listing: {{lists.name}}</p><br>
+<img src="{{lists.images.url}}" width="250 px" height="250px"><br><br>
+
+<p style="font-weight: bold;font-size: larger;">Current price->{{bids}} orignal Price->{{lists.price}}</p><br><br>
+{%if lists.close is not None%}
+        {% if bids.user == user%}
+        <p style="font-weight: bold;font-size: larger;">CONGRATULATIONS YOU WON</p><br><br>
+        <p style="font-weight: bold;font-size: larger;">CLOSED</p><br><br>
+
+        {% else%}
+        <p style="font-weight: bold;font-size: larger;">PURCHASED BY {{bids.user}}</p><br><br>
+        <p style="font-weight: bold;font-size: larger;">CLOSED</p><br><br>
+        {%endif%}
+{%else%}
+<form action="{% url 'listing' lists.id %}" method="post">
+    {%csrf_token%}
+
+    <input class="form-control" name="bid" type="number" placeholder="Bid"><br>
+    <input class="btn btn-primary" name="bid_sub" type="submit" value="Submit">
+<br><br>
+</form>
+{%endif%}
+<form action="{% url 'listing' lists.id %}" method="post">
+    {%csrf_token%}
+    {% if user == lists.user%}
+    <input class="btn btn-primary" name="close_sub" type="submit" value="Close">
+    {% endif%}
+
+    <br><br>
+
+    <br><br>
+</form>
+<a href="{% url 'add' lists.id %}">Add To Watchlist</a>
+<p style="font-weight: bold;font-size: larger;">Details</p>
+<ul>
+    <li>listed by {{lists.user}}</li>
+    <li>Category {{cat.categories}}</li>
+</ul>
+
+<form action="{% url 'listing' lists.id %}" method="POST">
+  {%csrf_token%}
+  <input class="form-control"  type="TextField" name="content" style="height:50px;width:599px;" >
+  <input class="btn btn-primary" type="submit" name="comm_sub" value="Submit">
+</form><br><br><br>
+
+{% for comment in comments %}
+{% if comment.comm_name.name == lists.name %}
+<ul>
+  <li>{{comment.content}}</li>
+  <li>by ->{{comment.user}}</li>
+</ul>
+{%endif%}
+{% endfor %}
+{% endblock %}

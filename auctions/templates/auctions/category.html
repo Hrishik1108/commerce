@@ -1,0 +1,13 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    {% for list in lists %}
+    <div class="col" style="border: 0.5px solid lightgrey; padding:10px ; ">
+     <ul>
+         <li><a href="{% url 'category_id' list.id %}">{{list.categories}}</a></li>
+     </ul>
+
+   <div><br>                                                                                                    
+    {% endfor %}
+{% endblock %}
