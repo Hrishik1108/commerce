@@ -93,25 +93,32 @@ def listing(request,id):
             return HttpResponseRedirect(reverse("listing",args=(id,)))
         if 'bid_sub' in request.POST:
             auc=auction_listing.objects.get(id=id)
-            bid=request.POST["bid"]
-            bid=float(bid)
-            bids=Bid.objects.all().filter(name=auc)
+
+            if request.user!= auc.user:
+                bid=request.POST["bid"]
+                bid=float(bid)
+                bids=Bid.objects.all().get(name=auc)
+            else:
+                return HttpResponse("You are the owner why are you bidding?")
             if bid>bids.bid:
                 forms=Bid(name=auc,bid=bid,user=request.user)
                 forms.save(update_fields=['bid','user'])
                 return HttpResponseRedirect(reverse("listing",args=(id,)))
             else:
-                return HttpResponse("Bid Should Be greater than current price")
-
+                return HttpResponse("Bid cannot be lower than current price")
+            
 
     abc=auction_listing.objects.get(id=id)
+    print(abc)
     bid=Bid.objects.get(name=abc)
+    print(bid)
     cats=category.objects.get(pk=abc.categories_id)
     return render(request,"auctions/listings.html",{
         "lists":auction_listing.objects.get(id=id),
         "cat":  cats,
         "bids":bid,
-        "comments":Comments.objects.all()
+        "comments":Comments.objects.all(),
+        "userr":request.user
 
 
     })

@@ -36,7 +36,7 @@ class Bid(models.Model):
     bid=models.FloatField()
     user=models.ForeignKey(User,on_delete=models.CASCADE,related_name="bid_user")
 
-    
+
 
 class Comments(models.Model):
     comm_name=models.ForeignKey(auction_listing,on_delete=models.CASCADE)
