@@ -1,3 +1,4 @@
+from email.mime import image
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -63,7 +64,8 @@ def create(request):
        name=request.POST["name"]
        price=request.POST["price"]
        creation_date=request.POST["creation_date"]
-       images=request.POST["images"]
+       images=request.FILES['images']
+     
        category=request.POST["categories"]
        curr=price
        forms=auction_listing(name=name,price=price,creation_date=creation_date,images=images,user=request.user,categories_id=category)

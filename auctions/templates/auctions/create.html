@@ -6,7 +6,7 @@ Create Listing
 {% endblock %}
 
 {%block body %}
-<form action="{% url 'create' %}" method="post">
+<form action="{% url 'create' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">
         Name
